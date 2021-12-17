@@ -44,13 +44,14 @@ stage('Download latest twistcli') {
 //      }      
 //        }
  
- stage('Scan image with twistcli') {
-   sh 'docker pull rbenavente/evilpetclinic:latest'  
-   withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
-   sh "./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details rbenavente/evilpetclinic:latest --ci-results-file prisma-cloud-image-scan-results.json"
-    prismaCloudPublish resultsFilePattern: 'prisma-cloud-image-scan-results.json'
-      }      
-        }
+// Comentado por no duplicar Scan image - Utilizando solo Jenkins 
+// stage('Scan image with twistcli') {
+//   sh 'docker pull rbenavente/evilpetclinic:latest'  
+//   withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
+//   sh "./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details rbenavente/evilpetclinic:latest --ci-results-file prisma-cloud-image-scan-results.json"
+//    prismaCloudPublish resultsFilePattern: 'prisma-cloud-image-scan-results.json'
+//      }      
+//        }
         
   stage('Scan image with jenkins plugin') {
       try {
