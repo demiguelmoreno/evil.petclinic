@@ -33,7 +33,7 @@ node {
 			docker pull demiguelmoreno/evilpetclinic:latest
 		'''
 		withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
-			./twistcli images scan -u $TL_USER -p $TL_PASS --address https://$TL_CONSOLE --details demiguelmoreno/evilpetclinic:latest --ci-results-file prisma-cloud-image-scan-results.json
+			./twistcli images scan -u $TL_USER -p $TL_PASS --address https://$TL_CONSOLE --details demiguelmoreno/evilpetclinic:latest --output-file prisma-cloud-image-scan-results.json
 			prismaCloudPublish resultsFilePattern: 'prisma-cloud-image-scan-results.json'
 		}      
 	}
