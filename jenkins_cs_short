@@ -8,6 +8,15 @@ stage('Clone repository') {
     checkout scm       
 }
 
+//stage('Download latest twistcli') {
+//	withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
+//		sh '''
+// 			curl -k -u $TL_USER:$TL_PASS --output ./twistcli https://$TL_CONSOLE/api/v1/util/twistcli
+//			sudo chmod a+x ./twistcli
+//		'''
+//	}
+//}
+
 stage('Scan SCA from pom.xml file') {
     script { 
         docker.image('bridgecrew/checkov:latest').inside("--entrypoint=''")  {     
@@ -27,16 +36,16 @@ stage('Build image') {
     echo 'Building image...' 
 }
  
-stage('Scan image before Pushing to Registry') {
-    try {
-        sh 'docker pull demiguelmoreno/evilpetclinic:latest'  
-        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
-            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: 'demiguelmoreno/evilpetclinic:latest', key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
-        }
-    } finally {
-        prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
-    }
-}
+//stage('Scan image before Pushing to Registry') {
+//    try {
+//        sh 'docker pull demiguelmoreno/evilpetclinic:latest'  
+//        withCredentials([usernamePassword(credentialsId: 'twistlock_creds', passwordVariable: 'TL_PASS', usernameVariable: 'TL_USER')]) {
+//            prismaCloudScanImage ca: '', cert: '', dockerAddress: 'unix:///var/run/docker.sock', ignoreImageBuildTime: true, image: 'demiguelmoreno/evilpetclinic:latest', key: '', logLevel: 'debug', podmanPath: '', project: '', resultsFile: 'prisma-cloud-scan-results.json'
+//        }
+//    } finally {
+//        prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
+//    }
+//}
 
 stage('Push image to the registry') {
     /// This step simulates the image Push to the registry 
