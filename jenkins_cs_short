@@ -4,6 +4,10 @@ environment {
     PRISMA_API_URL='https://api.eu.prismacloud.io'
 }
 
+stage('Update Checkov') {
+    pip3 install -U checkov
+}
+
 stage('Clone repository') {
     checkout scm       
 }
