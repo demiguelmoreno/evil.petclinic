@@ -5,7 +5,9 @@ environment {
 }
 
 stage('Update Checkov') {
-    pip3 install -U checkov
+    sh '''
+        pip3 install -U checkov
+    '''
 }
 
 stage('Clone repository') {
