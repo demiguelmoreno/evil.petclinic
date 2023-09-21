@@ -6,7 +6,7 @@ environment {
 
 stage('Update Checkov') {
     sh '''
-        pip3 install -U checkov
+        pip install -U checkov
     '''
 }
 
